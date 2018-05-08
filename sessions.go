@@ -27,7 +27,7 @@ type Sessions struct {
 	tf   TimeoutFunc
 	list *timedlist.TimedList
 	next http.Handler
-	key  struct{}
+	key  interface{}
 }
 
 // New creates a new instance of Sessions.
@@ -40,8 +40,8 @@ type Sessions struct {
 //  Value: Ignored. Value is set to session ID and is managed internally.
 //	Expires: Ignored. Calculated from MaxAge.
 // tf is a function that gets called when a session expires.
-// key is an empty unique structure used as Context key.
-func New(next http.Handler, tmpl *http.Cookie, tf TimeoutFunc, key struct{}) *Sessions {
+// key is any type supported as key by Context package.
+func New(next http.Handler, tmpl *http.Cookie, tf TimeoutFunc, key interface{}) *Sessions {
 	if tmpl == nil {
 		tmpl = &http.Cookie{
 			Name:   "sessionid",
