@@ -23,10 +23,10 @@ type TimeoutFunc func(int)
 // "real" handler and a HTTP server. It should prefferably be the first in the
 // otherwise not recommended chain of handlers.
 type Sessions struct {
-	tmpl *http.Cookie
-	tf   TimeoutFunc
 	list *timedlist.TimedList
 	next http.Handler
+	tmpl *http.Cookie
+	tf   TimeoutFunc
 	key  interface{}
 }
 
@@ -64,7 +64,7 @@ func (s *Sessions) timeout(p *timedlist.Item) {
 	if s.tf == nil {
 		return
 	}
-	s.tf(0)
+	s.tf(p.Id())
 }
 
 // Makes a new session cookie from the template cookie.
